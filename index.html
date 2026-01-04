@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Inteltrans - 颖运国际物流 | 全球端到端物流解决方案专家</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00338d; 
+            --accent: #f39200;  
+            --dark: #0a121e;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+        body { color: #333; line-height: 1.6; overflow-x: hidden; background: #fff; }
+
+        /* 语言控制核心逻辑 */
+        body.lang-en .zh { display: none !important; }
+        body.lang-zh .en { display: none !important; }
+
+        .container { width: 100%; max-width: 1300px; margin: 0 auto; padding: 0 25px; }
+        
+        /* --- Header --- */
+        header { background: rgba(255,255,255,0.98); height: 80px; display: flex; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.08); }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 50px; width: auto; object-fit: contain; }
+        
+        nav ul { display: flex; gap: 35px; list-style: none; }
+        nav a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 15px; transition: var(--transition); letter-spacing: 0.5px; }
+        nav a:hover { color: var(--primary); }
+
+        .nav-controls { display: flex; align-items: center; gap: 15px; }
+        .btn-lang { border: 1.5px solid var(--primary); color: var(--primary); background: transparent; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: var(--transition); }
+        .btn-lang:hover { background: var(--primary); color: white; }
+
+        /* --- Hero Section --- */
+        .hero { 
+            height: 100vh;
+            background: linear-gradient(rgba(0,40,110,0.8), rgba(10,18,30,0.7)), url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=1600'); 
+            background-size: cover; 
+            background-position: center; 
+            display: flex; 
+            align-items: center; 
+            color: white; 
+            padding-top: 80px;
+        }
+        .hero-text h1 { font-size: 2.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 25px; letter-spacing: 1px; }
+        .hero-text p { font-size: 1.15rem; margin-bottom: 35px; opacity: 0.9; line-height: 1.8; max-width: 850px; font-weight: 300; }
+        
+        .badge-group { display: flex; gap: 15px; flex-wrap: wrap; }
+        .badge-card { background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(5px); }
+        .badge-card span { display: block; font-size: 11px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px; }
+        .badge-card strong { color: var(--accent); font-size: 1.3rem; display: block; }
+
+        /* --- Services --- */
+        .section-padding { padding: 100px 0; background: #f8f9fb; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.4rem; color: var(--primary); position: relative; padding-bottom: 20px; font-weight: 700; }
+        .section-header h2::after { content:''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 70px; height: 4px; background: var(--accent); }
+
+        .services-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .service-card { position: relative; height: 380px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: var(--transition); }
+        .service-card:hover { transform: translateY(-10px); }
+        .service-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .service-card:hover img { transform: scale(1.05); }
+        .service-info { 
+            position: absolute; bottom: 0; left: 0; right: 0; 
+            padding: 40px 30px; 
+            background: linear-gradient(to top, rgba(0,30,80,0.95) 20%, rgba(0,30,80,0.4) 70%, transparent); 
+            color: white; 
+        }
+        .service-info h3 { font-size: 1.5rem; margin-bottom: 12px; font-weight: 700; }
+        .service-info p { font-size: 0.95rem; opacity: 0.9; line-height: 1.6; }
+
+        /* --- Footer --- */
+        footer { background: var(--dark); color: #cbd5e0; padding: 80px 0 30px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 50px; }
+        .footer-logo img { height: 50px; filter: brightness(0) invert(1); margin-bottom: 30px; }
+        .footer-col h4 { color: white; margin-bottom: 30px; font-size: 1.25rem; font-weight: 700; position: relative; }
+        
+        .contact-list { list-style: none; }
+        .contact-list li { display: flex; gap: 15px; margin-bottom: 20px; font-size: 0.95rem; }
+        .contact-list i { color: var(--accent); font-size: 18px; margin-top: 4px; }
+
+        .advantage-list { list-style: none; line-height: 2.2; }
+        .advantage-list li::before { content: "•"; color: var(--accent); margin-right: 10px; font-weight: bold; }
+
+        .partner-list { color: #fff; font-weight: 500; line-height: 2.2; opacity: 0.9; }
+        .copyright { text-align: center; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; margin-top: 60px; color: #718096; }
+
+        @media (min-width: 769px) {
+            .hero-text h1 { font-size: 3.8rem; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1.2fr; }
+        }
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .hero-text h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body class="lang-zh">
+
+    <header>
+        <div class="container nav-inner">
+            <div class="logo">
+                <a href="#"><img src="英文 单版.png" alt="Inteltrans Logo"></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about"><span class="zh">关于我们</span><span class="en">ABOUT US</span></a></li>
+                    <li><a href="#services"><span class="zh">核心业务</span><span class="en">SERVICES</span></a></li>
+                    <li><a href="#contact"><span class="zh">联系我们</span><span class="en">CONTACT</span></a></li>
+                </ul>
+            </nav>
+            <div class="nav-controls">
+                <button class="btn-lang" onclick="toggleLang()">
+                    <span class="zh">ENGLISH</span><span class="en">中文版本</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="hero">
+        <div class="container">
+            <div class="hero-text">
+                <h1 class="zh">颖通全球，运达未来<br>专业国际供应链服务商</h1>
+                <h1 class="en">Connecting the World,<br>Delivering the Future</h1>
+                <p class="zh">自2006年扎根深圳，颖运国际物流（Inteltrans）凭借近20年的行业深耕，已构建起连接亚洲与中东、欧洲及全球的物流网络。我们不仅是货运代理，更是您全球商业版图扩张中值得信赖的战略合作伙伴。</p>
+                <p class="en">Established in 2006, Inteltrans has built a robust global network connecting Asia with Middle East, Europe, and beyond. With 20 years of expertise, we serve not just as a forwarder, but as a strategic partner for your global expansion.</p>
+                <div class="badge-group">
+                    <div class="badge-card"><span>NVOCC License</span><strong>MOC-NV 33070</strong></div>
+                    <div class="badge-card"><span>JCTrans Member</span><strong>ID: 108966</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="zh">全方位核心业务</h2>
+                <h2 class="en">Our Core Expertise</h2>
+            </div>
+            <div class="services-grid">
+<div class="service-card">
+    <img src="仓库正面.png" alt="海运物流实拍" style="object-position: center 20%;"> 
+    <div class="service-info">
+        <h3 class="zh">全球集装箱海运 (FCL/LCL)</h3>
+        <h3 class="en">Ocean Freight Solutions</h3>
+        <p class="zh">深耕中东及亚洲航线，提供极具竞争力的整柜与拼箱方案，涵盖订舱、清关、门到门全流程服务。</p>
+        <p class="en">Strategic FCL/LCL services covering Asia to Middle East routes with full end-to-end visibility and competitive pricing.</p>
+    </div>
+</div>
+                <div class="service-card">
+                    <img src="空运机场.jpg" alt="极速空运与多式联运">
+                    <div class="service-info">
+                        <h3 class="zh">极速空运与多式联运</h3><h3 class="en">Air & Multimodal Transport</h3>
+                        <p class="zh">对接全球干线航空，专注高价值货物、医疗器械及电子产品，保障货物安全、精准、准时送达。</p>
+                        <p class="en">Direct airline partnerships for high-value cargo, medical devices, and electronics, ensuring speed and reliability.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800" alt="Middle East Direct">
+                    <div class="service-info">
+                        <h3 class="zh">中东双清专线 (DDP/DDU)</h3><h3 class="en">Middle East Logistics Expert</h3>
+                        <p class="zh">提供沙特、阿联酋等国的一站式双清到门服务，解决复杂关务难题，助力中国品牌合规出海。</p>
+                        <p class="en">Specialized DDP/DDU services for KSA, UAE, and GCC countries, simplifying complex customs and last-mile delivery.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="仓库背面.png" alt="仓储与项目物流实拍">
+                    <div class="service-info">
+                        <h3 class="zh">仓储增值与项目物流</h3><h3 class="en">Warehousing & Project Cargo</h3>
+                        <p class="zh">提供大件设备运输、海外仓储、贴标及分拨服务，针对不同行业定制个性化供应链方案。</p>
+                        <p class="en">Customized solutions for over-sized cargo, labeling, and distribution via our strategic warehouse networks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="英文 单版.png" alt="Inteltrans">
+                    </div>
+                    <p class="zh" style="font-size: 0.9rem; line-height: 1.8;">
+                        颖运国际（Inteltrans）秉承“专业、诚信、高效”的服务理念，致力于通过数字化的管理与卓越的线下执行力，为全球客户优化物流成本。
+                    </p>
+                    <p class="en" style="font-size: 0.9rem; line-height: 1.8;">
+                        Inteltrans upholds "Professionalism, Integrity, and Efficiency," optimizing supply chain costs through digital management and excellence.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="zh">核心优势</h4>
+                    <h4 class="en">Why Choose Us</h4>
+                    <ul class="advantage-list">
+                        <li class="zh">深耕中东市场20载</li>
+                        <li class="zh">A类报关资质保障</li>
+                        <li class="zh">全球100+代理网点</li>
+                        <li class="en">20 Years ME Expertise</li>
+                        <li class="en">Class-A Customs Broker</li>
+                        <li class="en">100+ Global Agents</li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="zh">合作伙伴</h4>
+                    <h4 class="en">Strategic Partners</h4>
+                    <div class="partner-list">
+                        Xiaomi / Uniview<br>
+                        Zoomlion / Mindray<br>
+                        Hikvision / BYD
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="zh">联系我们</h4>
+                    <h4 class="en">Get In Touch</h4>
+                    <ul class="contact-list">
+                        <li><i class="fas fa-envelope"></i> <span>info@inteltrans.net</span></li>
+                        <li><i class="fas fa-phone-alt"></i> <span>+86 0755 2891 3742</span></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <span class="zh">深圳市龙岗区荣德时代广场B座</span><span class="en">RongDe Times Square,Longgang district,Shenzhen, China</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2017 Inteltrans International Logistics Co., Ltd. <span class="zh">版权所有 | 粤ICP备XXXXXXXX号</span><span class="en">All Rights Reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLang() {
+            document.body.classList.toggle('lang-zh');
+            document.body.classList.toggle('lang-en');
+        }
+    </script>
+</body>
+</html>
