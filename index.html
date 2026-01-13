@@ -45,7 +45,6 @@
         body.lang-ar .service-card .read-more i { transform: rotate(180deg); margin-right: 5px; }
         body.lang-ar .footer-list i { margin-left: 10px; margin-right: 0; }
         body.lang-ar .badge-card { border-left: none; border-right: 4px solid var(--accent); }
-        /* RTL 下修正 Logo 位置 */
         body.lang-ar .partner-display img { left: auto; right: 0; }
 
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
@@ -77,7 +76,7 @@
         nav a:hover { color: var(--accent); }
         nav a:hover::after { width: 100%; }
 
-        /* --- [升级] 下拉式语言菜单 --- */
+        /* --- [修复重点] 下拉菜单样式 --- */
         .lang-dropdown {
             position: relative;
             display: inline-block;
@@ -97,32 +96,32 @@
             gap: 6px;
             transition: all 0.3s ease;
         }
-        .lang-btn:hover {
+        /* 激活状态（菜单打开时） */
+        .lang-btn.active, .lang-btn:hover {
             background: var(--primary);
             color: white;
         }
 
-        /* 下拉菜单内容 */
         .lang-content {
-            display: none;
+            display: none; /* 默认隐藏 */
             position: absolute;
-            top: 100%;
+            top: 100%; /* 紧贴按钮下方 */
             left: 50%;
             transform: translateX(-50%);
             background-color: white;
             min-width: 120px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
             border-radius: 8px;
             z-index: 1001;
-            margin-top: 10px;
+            margin-top: 8px; /* 间距缩小，减少断裂感 */
             overflow: hidden;
             border: 1px solid #eee;
         }
 
-        /* 鼠标移入显示菜单 */
-        .lang-dropdown:hover .lang-content {
+        /* 只有添加了 .show 类才显示 (由 JS 控制) */
+        .lang-content.show {
             display: block;
-            animation: fadeIn 0.3s;
+            animation: fadeIn 0.2s ease-out;
         }
 
         .lang-content a {
@@ -133,7 +132,11 @@
             font-size: 14px;
             text-align: center;
             transition: 0.2s;
+            cursor: pointer;
+            border-bottom: 1px solid #f5f5f5;
         }
+        .lang-content a:last-child { border-bottom: none; }
+        
         .lang-content a:hover {
             background-color: var(--light-bg);
             color: var(--primary);
@@ -223,10 +226,10 @@
         .footer-col h4 { color: white; margin-bottom: 25px; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
         
         .footer-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; list-style: none; }
-        .footer-list i { color: var(--accent); font-size: 16px; margin-right: 10px; } /* LTR 默认 */
+        .footer-list i { color: var(--accent); font-size: 16px; margin-right: 10px; } 
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-top: 60px; text-align: center; font-size: 0.85rem; }
 
-        /* --- Partner Logos (JPG修复版) --- */
+        /* --- Partner Logos --- */
         .partner-display {
             height: 90px;
             position: relative;
@@ -302,15 +305,15 @@
             <div class="nav-controls">
                 
                 <div class="lang-dropdown">
-                    <button class="lang-btn">
+                    <button class="lang-btn" onclick="toggleDropdown(event)">
                         <i class="fas fa-globe"></i> 
                         <span id="current-lang">English</span>
                         <i class="fas fa-chevron-down" style="font-size:10px;"></i>
                     </button>
-                    <div class="lang-content">
-                        <a href="javascript:void(0)" onclick="setLang('en')">English</a>
-                        <a href="javascript:void(0)" onclick="setLang('ar')">العربية</a>
-                        <a href="javascript:void(0)" onclick="setLang('zh')">中文</a>
+                    <div class="lang-content" id="langMenu">
+                        <a onclick="setLang('en')">English</a>
+                        <a onclick="setLang('ar')">العربية</a>
+                        <a onclick="setLang('zh')">中文</a>
                     </div>
                 </div>
 
@@ -557,26 +560,52 @@
         // 1. 初始化动画
         AOS.init({ offset: 120, duration: 800, easing: 'ease-out-cubic', once: true });
         
-        // 2. [新] 指定语言切换功能
+        // 2. [修复重点] 语言切换功能 (点击触发)
         const langMap = {
             'en': { class: 'lang-en', label: 'English' },
             'ar': { class: 'lang-ar', label: 'العربية' },
             'zh': { class: 'lang-zh', label: '中文' }
         };
 
+        // 切换下拉菜单显示/隐藏
+        function toggleDropdown(event) {
+            // 阻止事件冒泡，防止触发 window.onclick
+            event.stopPropagation();
+            const menu = document.getElementById('langMenu');
+            menu.classList.toggle('show');
+            // 切换按钮的激活状态样式
+            document.querySelector('.lang-btn').classList.toggle('active');
+        }
+
+        // 设置语言并关闭菜单
         function setLang(langCode) {
-            // 移除所有语言类
+            // 1. 切换 body 类
             document.body.classList.remove('lang-en', 'lang-ar', 'lang-zh');
-            
-            // 添加选中的语言类
             const target = langMap[langCode];
             document.body.classList.add(target.class);
             
-            // 更新按钮显示的文字
+            // 2. 更新按钮文字
             document.getElementById('current-lang').innerText = target.label;
             
-            // 刷新动画，确保 RTL 布局正常
+            // 3. 关闭菜单
+            const menu = document.getElementById('langMenu');
+            menu.classList.remove('show');
+            document.querySelector('.lang-btn').classList.remove('active');
+
+            // 4. 刷新动画
             setTimeout(function(){ AOS.refresh(); }, 100);
+        }
+
+        // 点击空白处关闭菜单
+        window.onclick = function(event) {
+            // 如果点击的不是下拉按钮内部
+            if (!event.target.closest('.lang-dropdown')) {
+                const menu = document.getElementById('langMenu');
+                if (menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                    document.querySelector('.lang-btn').classList.remove('active');
+                }
+            }
         }
 
         // 3. 数字计数器
