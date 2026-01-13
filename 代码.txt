@@ -521,7 +521,7 @@
                         <h3 class="en" style="margin-bottom:20px;">Contact Info</h3>
                         <h3 class="ar" style="margin-bottom:20px;">معلومات الاتصال</h3>
                         <h3 class="zh" style="margin-bottom:20px;">联系方式</h3>
-                        <div class="info-item"><i class="fas fa-map-marker-alt"></i><div><h5 class="en">Headquarters</h5><h5 class="ar">المقر الرئيسي</h5><h5 class="zh">总部地址</h5><p class="en">RongDe Times Square, Shenzhen</p><p class="ar">ساحة رونغدي تايمز، شنتشن</p><p class="zh">深圳市龙岗区荣德时代广场B座</p></div></div>
+                        <div class="info-item"><i class="fas fa-map-marker-alt"></i><div><h5 class="en">Address</h5><h5 class="ar">المقر الرئيسي</h5><h5 class="zh">地址</h5><p class="en">RongDe Times Square, Shenzhen</p><p class="ar">ساحة رونغدي تايمز، شنتشن</p><p class="zh">深圳市龙岗区荣德时代广场B座</p></div></div>
                         <div class="info-item"><i class="fas fa-envelope"></i><div><h5 class="en">Email</h5><h5 class="ar">البريد</h5><h5 class="zh">邮箱</h5><p>info@inteltrans.net</p></div></div>
                     </div>
                 </div>
