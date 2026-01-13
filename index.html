@@ -10,173 +10,248 @@
     
     <style>
         :root {
-            --primary: #00338d; 
-            --accent: #f39200;
+            /* 核心色彩规范 */
+            --primary: #00338d; /* 默认：Logo 蓝 */
+            --primary-dark: #002266;
+            --accent: #f39200;  /* 橙色点缀 */
             --accent-hover: #d68100;
-            --dark: #0a121e;
-            --light-bg: #f4f6f9;
+            --dark: #0a121e;    /* 选中/悬停：深黑色 */
+            --light-bg: #f8f9fa;
             --white: #ffffff;
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            --shadow-card: 0 10px 30px rgba(0,0,0,0.05);
-            --shadow-hover: 0 20px 40px rgba(0,51,141,0.15);
+            --border-color: #e5e5e5;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow-card: 0 10px 30px rgba(0,0,0,0.06);
+            --shadow-dropdown: 0 15px 40px rgba(0,51,141,0.12);
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", sans-serif; }
-        body { color: #333; line-height: 1.6; overflow-x: hidden; background: var(--white); scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; /* 确保点击跳转不被导航栏遮挡 */ }
+        body { color: #333; line-height: 1.6; overflow-x: hidden; background: var(--white); }
 
         /* --- 多语言显示控制 --- */
         .en, .zh, .ar { display: none; }
         
-        /* English (默认) */
         body.lang-en .en { display: inline-block; }
-        body.lang-en div.en, body.lang-en p.en, body.lang-en h1.en, body.lang-en h2.en, body.lang-en h3.en, body.lang-en h4.en, body.lang-en ul.en, body.lang-en label.en, body.lang-en button.en { display: block; }
+        body.lang-en div.en, body.lang-en p.en, body.lang-en h1.en, body.lang-en h2.en, body.lang-en h3.en, body.lang-en h4.en, body.lang-en ul.en, body.lang-en label.en, body.lang-en button.en, body.lang-en span.en, body.lang-en a.en { display: block; }
         
-        /* Chinese */
         body.lang-zh .zh { display: inline-block; }
-        body.lang-zh div.zh, body.lang-zh p.zh, body.lang-zh h1.zh, body.lang-zh h2.zh, body.lang-zh h3.zh, body.lang-zh h4.zh, body.lang-zh ul.zh, body.lang-zh label.zh, body.lang-zh button.zh { display: block; }
+        body.lang-zh div.zh, body.lang-zh p.zh, body.lang-zh h1.zh, body.lang-zh h2.zh, body.lang-zh h3.zh, body.lang-zh h4.zh, body.lang-zh ul.zh, body.lang-zh label.zh, body.lang-zh button.zh, body.lang-zh span.zh, body.lang-zh a.zh { display: block; }
 
-        /* Arabic (RTL模式) */
         body.lang-ar .ar { display: inline-block; }
-        body.lang-ar div.ar, body.lang-ar p.ar, body.lang-ar h1.ar, body.lang-ar h2.ar, body.lang-ar h3.ar, body.lang-ar h4.ar, body.lang-ar ul.ar, body.lang-ar label.ar, body.lang-ar button.ar { display: block; }
+        body.lang-ar div.ar, body.lang-ar p.ar, body.lang-ar h1.ar, body.lang-ar h2.ar, body.lang-ar h3.ar, body.lang-ar h4.ar, body.lang-ar ul.ar, body.lang-ar label.ar, body.lang-ar button.ar, body.lang-ar span.ar, body.lang-ar a.ar { display: block; }
         
-        /* 阿拉伯语特殊镜像排版 */
-        body.lang-ar { 
-            direction: rtl; 
-            text-align: right; 
-            font-family: "Tahoma", "Arial", sans-serif; 
-        }
+        /* RTL 适配 */
+        body.lang-ar { direction: rtl; text-align: right; font-family: "Tahoma", "Arial", sans-serif; }
         body.lang-ar .nav-inner { flex-direction: row; }
-        body.lang-ar .service-card .read-more i { transform: rotate(180deg); margin-right: 5px; }
-        body.lang-ar .footer-list i { margin-left: 10px; margin-right: 0; }
-        body.lang-ar .badge-card { border-left: none; border-right: 4px solid var(--accent); }
-        body.lang-ar .partner-display img { left: auto; right: 0; }
-        body.lang-ar .form-group input, body.lang-ar .form-group textarea { text-align: right; }
+        body.lang-ar .top-bar-inner { flex-direction: row; }
+        body.lang-ar .contact-info-group { margin-left: 20px; margin-right: 0; }
+        body.lang-ar .contact-info-group i { margin-left: 8px; margin-right: 0; }
+        body.lang-ar .service-btn i { transform: rotate(180deg); margin-right: 8px; margin-left: 0; }
+        body.lang-ar .service-card:hover .service-btn i { transform: translateX(-5px) rotate(180deg); }
+        body.lang-ar .dropdown-menu { right: 0; left: auto; text-align: right; }
+        body.lang-ar .nav-item .fa-chevron-down { margin-right: 5px; margin-left: 0; }
 
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* --- Header --- */
+        /* --- [Level 1] Top Info Bar --- */
+        .top-bar {
+            background-color: var(--dark);
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+            padding: 8px 0;
+            position: relative;
+            z-index: 1002;
+        }
+        .top-bar-inner { display: flex; justify-content: space-between; align-items: center; }
+        .top-contact { display: flex; gap: 25px; }
+        .contact-info-group { display: flex; align-items: center; gap: 8px; }
+        .contact-info-group i { color: var(--accent); }
+        .contact-info-group a { color: inherit; text-decoration: none; transition: 0.3s; }
+        .contact-info-group a:hover { color: var(--white); }
+
+        /* --- [Level 2] Main Header --- */
         header { 
-            background: rgba(255,255,255,0.95); 
-            backdrop-filter: blur(10px);
-            height: 80px; 
+            background: #ffffff;
+            height: 90px; 
             display: flex; align-items: center; 
-            position: fixed; width: 100%; top: 0; z-index: 1000; 
+            position: sticky; top: 0; z-index: 1000; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
-            transition: var(--transition);
+            transition: all 0.4s ease;
         }
+        
         .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .logo img { height: 45px; width: auto; object-fit: contain; }
+        .logo img { height: 50px; width: auto; object-fit: contain; }
         
-        nav ul { display: flex; gap: 40px; list-style: none; }
+        /* --- [Level 3] Navigation (Blue -> Black Logic) --- */
+        .desktop-nav { display: flex; gap: 40px; list-style: none; margin: 0; padding: 0; }
+        .nav-item { position: relative; padding: 30px 0; /* 增大触控/感应区域 */ }
         
-        nav a { 
+        .nav-link { 
             text-decoration: none; 
-            color: var(--primary); 
-            font-weight: 700;
-            font-size: 15px; 
-            position: relative; 
-            padding-bottom: 5px; 
+            color: var(--primary); /* 默认：蓝色 */
+            font-weight: 700; font-size: 15px; 
+            display: flex; align-items: center; gap: 6px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            position: relative;
         }
-        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: 0.3s; }
-        nav a:hover { color: var(--accent); }
-        nav a:hover::after { width: 100%; }
-
-        /* --- 下拉菜单样式 --- */
-        .lang-dropdown { position: relative; display: inline-block; }
-        .lang-btn {
-            background: transparent; border: 1px solid var(--primary); color: var(--primary);
-            padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease;
-        }
-        .lang-btn.active, .lang-btn:hover { background: var(--primary); color: white; }
-        .lang-content {
-            display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-            background-color: white; min-width: 120px; box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
-            border-radius: 8px; z-index: 1001; margin-top: 8px; overflow: hidden; border: 1px solid #eee;
-        }
-        .lang-content.show { display: block; animation: fadeIn 0.2s ease-out; }
-        .lang-content a {
-            color: #333; padding: 12px 16px; text-decoration: none; display: block;
-            font-size: 14px; text-align: center; transition: 0.2s; cursor: pointer; border-bottom: 1px solid #f5f5f5;
-        }
-        .lang-content a:last-child { border-bottom: none; }
-        .lang-content a:hover { background-color: var(--light-bg); color: var(--primary); }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        /* 交互状态：变为深黑 */
+        .nav-link:hover, 
+        .nav-link.active,
+        .nav-item:hover .nav-link { 
+            color: var(--dark) !important; 
         }
 
-        /* --- Hero Section --- */
+        .nav-link i { font-size: 10px; opacity: 0.6; transition: 0.3s; }
+        .nav-item:hover .nav-link i { transform: rotate(180deg); color: var(--dark); }
+
+        /* 下划线动画 */
+        .nav-link::after { 
+            content: ''; position: absolute; bottom: -5px; left: 0; 
+            width: 0; height: 3px; background: var(--accent); 
+            transition: width 0.3s ease; 
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        /* --- Dropdown Menu (交互完善) --- */
+        .dropdown-menu {
+            position: absolute; top: 100%; left: -20px;
+            background: white; min-width: 240px;
+            box-shadow: var(--shadow-dropdown);
+            border-radius: 0 0 8px 8px;
+            padding: 10px 0;
+            opacity: 0; visibility: hidden; transform: translateY(15px);
+            transition: all 0.3s ease;
+            z-index: 1100;
+            border-top: 3px solid var(--accent);
+            margin-top: -5px; /* 略微上移，衔接点击区域 */
+        }
+        
+        /* 增加透明伪元素防止断触 */
+        .dropdown-menu::before {
+            content: ""; position: absolute; top: -20px; left: 0; width: 100%; height: 20px; background: transparent;
+        }
+
+        .nav-item:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .dropdown-item { display: block; }
+        .dropdown-link {
+            display: block; padding: 14px 25px;
+            color: #555; text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: 0.2s; border-bottom: 1px solid #f9f9f9;
+        }
+        /* 子菜单选中态：深黑 */
+        .dropdown-link:hover { 
+            background: var(--light-bg); 
+            color: var(--dark); 
+            padding-left: 30px; 
+            font-weight: 700;
+        }
+        body.lang-ar .dropdown-link:hover { padding-left: 25px; padding-right: 30px; }
+        .dropdown-link:last-child { border-bottom: none; }
+
+        /* --- Language Switcher --- */
+        .lang-switch-top { position: relative; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 600; }
+        .lang-switch-top:hover { color: var(--white); }
+        .lang-menu-top {
+            display: none; position: absolute; top: 100%; right: 0;
+            background: white; color: #333; min-width: 100px;
+            box-shadow: var(--shadow-card); border-radius: 4px; padding: 5px 0; z-index: 1003;
+        }
+        body.lang-ar .lang-menu-top { right: auto; left: 0; }
+        .lang-switch-top:hover .lang-menu-top { display: block; }
+        .lang-item { display: block; padding: 8px 15px; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .lang-item:hover { background: var(--light-bg); color: var(--primary); }
+
+        /* --- Mobile Menu --- */
+        .mobile-toggle { display: none; font-size: 22px; color: var(--primary); background: none; border: none; cursor: pointer; }
+        
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
+            background: white; z-index: 2000; box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            transition: right 0.4s ease; padding: 20px; display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .mobile-menu.open { right: 0; }
+        .mobile-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1999; display: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .mobile-overlay.open { display: block; opacity: 1; }
+        
+        .mobile-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .mobile-logo { height: 35px; }
+        .mobile-close { font-size: 24px; color: #666; cursor: pointer; }
+        
+        .mobile-nav-item { border-bottom: 1px solid #f9f9f9; }
+        .mobile-nav-link {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 0; font-size: 16px; font-weight: 600; color: var(--dark); text-decoration: none;
+        }
+        .mobile-sub-menu { display: none; padding-left: 20px; background: #fcfcfc; margin-bottom: 10px; }
+        body.lang-ar .mobile-sub-menu { padding-left: 0; padding-right: 20px; }
+        .mobile-sub-link { display: block; padding: 10px 0; font-size: 14px; color: #666; text-decoration: none; }
+        .mobile-nav-item.active .mobile-sub-menu { display: block; }
+        .mobile-nav-item.active .mobile-nav-link i { transform: rotate(180deg); }
+
+        /* --- Sections Styles --- */
         .hero { 
-            height: 90vh; /* 稍微调高一点，更有电影感 */
-            min-height: 600px;
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; color: white; padding-top: 80px;
+            height: 85vh; min-height: 550px;
+            position: relative; overflow: hidden; display: flex; align-items: center; color: white;
         }
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,30,80,0.8), rgba(0,10,20,0.6)), url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=1600'); 
-            background-size: cover; background-position: center;
-            z-index: -1;
-            animation: kenBurns 20s infinite alternate;
+            background: linear-gradient(rgba(0,30,80,0.7), rgba(0,10,20,0.5)), url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=1600'); 
+            background-size: cover; background-position: center; z-index: -1; animation: kenBurns 20s infinite alternate;
         }
-        @keyframes kenBurns {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
+        @keyframes kenBurns { from { transform: scale(1); } to { transform: scale(1.1); } }
 
         .hero-text { position: relative; z-index: 2; max-width: 800px; }
         .hero-text h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .hero-text p { font-size: 1.25rem; margin-bottom: 40px; opacity: 0.95; line-height: 1.8; font-weight: 300; }
-        
+        .hero-text p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.95; line-height: 1.8; font-weight: 300; }
         .badge-group { display: flex; gap: 20px; flex-wrap: wrap; }
         .badge-card { 
             background: rgba(255,255,255,0.1); padding: 15px 25px; 
             border-radius: 6px; border-left: 4px solid var(--accent); 
-            backdrop-filter: blur(8px); transition: var(--transition); border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1);
         }
-        .badge-card:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
         .badge-card span { display: block; font-size: 11px; text-transform: uppercase; opacity: 0.9; margin-bottom: 4px; letter-spacing: 1px; font-weight: 600; }
         .badge-card strong { color: white; font-size: 1.4rem; display: block; }
 
-        /* --- Stats (带视差背景) --- */
-        .stats-section { 
-            background: white; padding: 50px 0; margin-top: -80px; 
-            position: relative; z-index: 10; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1); 
-            border-radius: 8px; 
-        }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 20px; }
-        .stat-item h3 { font-size: 2.8rem; color: var(--primary); font-weight: 800; margin-bottom: 5px; }
-        .stat-item p { font-size: 0.9rem; color: #666; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        .stat-divider { width: 1px; height: 60px; background: #eee; margin: auto; }
-
-        /* --- Global Sections --- */
         .section-padding { padding: 100px 0; }
         .bg-light { background: var(--light-bg); }
-        .section-header { text-align: center; margin-bottom: 70px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .section-header { text-align: center; margin-bottom: 60px; max-width: 800px; margin-left: auto; margin-right: auto; }
         .section-header h2 { font-size: 2.5rem; color: var(--primary); position: relative; display: inline-block; padding-bottom: 20px; font-weight: 800; margin-bottom: 15px; }
         .section-header h2::after { content:''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--accent); border-radius: 2px; }
         .section-header p { color: #666; font-size: 1.1rem; }
 
-        /* --- Services --- */
+        /* 内容板块增强 */
+        .content-block { margin-top: 60px; }
+        .text-content h3 { font-size: 1.8rem; color: var(--dark); margin-bottom: 20px; font-weight: 700; border-left: 5px solid var(--accent); padding-left: 15px; }
+        body.lang-ar .text-content h3 { border-left: none; border-right: 5px solid var(--accent); padding-left: 0; padding-right: 15px; }
+        .text-content p { font-size: 1.05rem; margin-bottom: 15px; color: #555; }
+        
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
         .service-card { 
             background: white; border-radius: 12px; overflow: hidden; 
-            box-shadow: var(--shadow-card); 
-            transition: var(--transition); cursor: pointer; group: overflow-hidden;
+            box-shadow: var(--shadow-card); transition: var(--transition); cursor: pointer;
+            display: flex; flex-direction: column; scroll-margin-top: 120px; /* 锚点定位偏移 */
         }
-        .service-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,51,141,0.15); }
         .img-wrapper { overflow: hidden; height: 280px; position: relative; }
         .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
         .service-card:hover .img-wrapper img { transform: scale(1.08); }
-        .service-content { padding: 40px; }
+        .service-content { padding: 40px; flex-grow: 1; display: flex; flex-direction: column; align-items: flex-start; }
         .service-content h3 { font-size: 1.5rem; color: var(--dark); margin-bottom: 15px; font-weight: 700; }
-        .read-more { color: var(--accent); font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .service-btn {
+            margin-top: auto; display: inline-flex; align-items: center; gap: 10px;
+            padding: 10px 28px; border: 1px solid var(--accent); border-radius: 50px;
+            color: var(--accent); background: transparent; font-size: 0.9rem; font-weight: 700;
+            text-transform: uppercase; transition: all 0.3s ease; text-decoration: none;
+        }
+        .service-card:hover .service-btn { background: var(--accent); color: white; box-shadow: 0 5px 15px rgba(243, 146, 0, 0.4); }
 
-        /* --- [NEW] Workflow Section --- */
-        .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; position: relative; }
+        .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; position: relative; margin-bottom: 60px; }
         .workflow-item { text-align: center; position: relative; z-index: 2; }
         .workflow-icon { 
             width: 80px; height: 80px; background: white; border-radius: 50%; margin: 0 auto 25px; 
@@ -185,141 +260,152 @@
             transition: var(--transition); border: 2px solid transparent;
         }
         .workflow-item:hover .workflow-icon { background: var(--primary); color: white; transform: scale(1.1); border-color: var(--accent); }
-        .workflow-item h4 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: var(--dark); }
-        .workflow-item p { font-size: 0.9rem; color: #666; padding: 0 10px; }
-        /* Connecting Line */
-        .workflow-line { 
-            position: absolute; top: 40px; left: 12%; right: 12%; height: 2px; 
-            background: #e0e6ed; z-index: 1; 
-        }
+        .workflow-line { position: absolute; top: 40px; left: 12%; right: 12%; height: 2px; background: #e0e6ed; z-index: 1; }
 
-        /* --- [NEW] Contact Form Section --- */
-        .contact-container { 
-            background: white; border-radius: 12px; box-shadow: var(--shadow-card); 
-            overflow: hidden; display: flex; flex-wrap: wrap; 
-        }
-        .contact-info { 
-            flex: 1; background: var(--primary); color: white; padding: 60px; 
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
+        .contact-container { background: white; border-radius: 12px; box-shadow: var(--shadow-card); overflow: hidden; display: flex; flex-wrap: wrap; }
+        .contact-info { flex: 1; background: var(--primary); color: white; padding: 60px; }
         .contact-form-wrapper { flex: 1.5; padding: 60px; }
         .info-item { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 30px; }
         .info-item i { font-size: 24px; color: var(--accent); margin-top: 5px; }
-        .info-item h5 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 700; }
-        .info-item p { opacity: 0.8; font-size: 0.95rem; }
-        
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark); font-size: 0.9rem; }
-        .form-group input, .form-group textarea { 
-            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; 
-            font-size: 1rem; transition: 0.3s; background: #f9f9f9;
-        }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); outline: none; background: white; }
-        .submit-btn { 
-            background: var(--accent); color: white; border: none; padding: 15px 40px; 
-            font-size: 1rem; font-weight: 700; border-radius: 6px; cursor: pointer; 
-            transition: 0.3s; width: 100%;
-        }
-        .submit-btn:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(243,146,0,0.3); }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; background: #f9f9f9; margin-bottom: 20px; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 15px 40px; font-weight: 700; border-radius: 6px; cursor: pointer; width: 100%; }
 
-        /* --- Footer --- */
         footer { background: var(--dark); color: #a0aec0; padding: 80px 0 30px; font-size: 0.95rem; }
         .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 40px; }
         .footer-logo img { height: 45px; filter: brightness(0) invert(1); margin-bottom: 25px; opacity: 0.9; }
-        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
-        .footer-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; list-style: none; }
-        .footer-list i { color: var(--accent); font-size: 16px; margin-right: 10px; } 
-        .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-top: 60px; text-align: center; font-size: 0.85rem; }
-
-        /* --- Partner Logos --- */
         .partner-display { height: 90px; position: relative; overflow: hidden; margin-top: 10px; }
-        .partner-display img {
-            height: 65px; width: auto; position: absolute; top: 50%; left: 0;
-            transform: translateY(-50%); opacity: 0; transition: opacity 1s ease-in-out; border-radius: 4px;
-        }
+        .partner-display img { height: 65px; width: auto; position: absolute; top: 50%; left: 0; transform: translateY(-50%); opacity: 0; transition: opacity 1s ease-in-out; border-radius: 4px; }
         .partner-display img.active { opacity: 1; }
 
-        /* --- Floating Button --- */
-        .float-btn {
-            position: fixed; bottom: 30px; right: 30px;
-            background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999;
-            cursor: pointer; transition: var(--transition);
-        }
-        .float-btn:hover { transform: scale(1.1); }
-
-        /* --- Responsive --- */
         @media (max-width: 900px) {
+            .top-bar { display: none; }
+            header { top: 0; }
+            .desktop-nav { display: none; }
+            .mobile-toggle { display: block; }
             .hero-text h1 { font-size: 2.2rem; }
-            .stats-section { padding: 30px 0; }
             .stats-grid, .services-grid, .workflow-grid, .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .contact-container { flex-direction: column; }
-            .workflow-line { display: none; } /* 手机端隐藏连接线 */
-            nav { display: none; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .workflow-line { display: none; }
         }
     </style>
 </head>
 <body class="lang-en">
 
-    <header>
-        <div class="container nav-inner">
-            <div class="logo">
-                <a href="#"><img src="英文 单版.png" alt="Inteltrans Logo"></a>
+    <div class="top-bar">
+        <div class="container top-bar-inner">
+            <div class="top-contact">
+                <div class="contact-info-group"><i class="fas fa-phone-alt"></i> <a href="tel:+86075528913742">+86 0755 2891 3742</a></div>
+                <div class="contact-info-group"><i class="fas fa-envelope"></i> <a href="mailto:info@inteltrans.net">info@inteltrans.net</a></div>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#about">
-                        <span class="en">About</span><span class="ar">من نحن</span><span class="zh">关于我们</span>
-                    </a></li>
-                    <li><a href="#services">
-                        <span class="en">Services</span><span class="ar">خدماتنا</span><span class="zh">核心业务</span>
-                    </a></li>
-                    <li><a href="#process">
-                        <span class="en">Process</span><span class="ar">العملية</span><span class="zh">服务流程</span>
-                    </a></li>
-                    <li><a href="#contact-us">
-                        <span class="en">Contact</span><span class="ar">اتصل بنا</span><span class="zh">联系我们</span>
-                    </a></li>
-                </ul>
-            </nav>
-            <div class="nav-controls">
-                <div class="lang-dropdown">
-                    <button class="lang-btn" onclick="toggleDropdown(event)">
-                        <i class="fas fa-globe"></i> 
-                        <span id="current-lang">English</span>
-                        <i class="fas fa-chevron-down" style="font-size:10px;"></i>
-                    </button>
-                    <div class="lang-content" id="langMenu">
-                        <a onclick="setLang('en')">English</a>
-                        <a onclick="setLang('ar')">العربية</a>
-                        <a onclick="setLang('zh')">中文</a>
-                    </div>
+            <div class="lang-switch-top">
+                <i class="fas fa-globe"></i> <span id="current-lang-top">English</span> <i class="fas fa-chevron-down" style="font-size:10px; margin-left:5px;"></i>
+                <div class="lang-menu-top">
+                    <span class="lang-item" onclick="setLang('en')">English</span>
+                    <span class="lang-item" onclick="setLang('ar')">العربية</span>
+                    <span class="lang-item" onclick="setLang('zh')">中文</span>
                 </div>
             </div>
         </div>
+    </div>
+
+    <header id="main-header">
+        <div class="container nav-inner">
+            <div class="logo"><a href="#"><img src="英文 单版.png" alt="Inteltrans Logo"></a></div>
+            
+            <nav>
+                <ul class="desktop-nav">
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">
+                            <span class="en">About</span><span class="ar">من نحن</span><span class="zh">关于我们</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item"><a href="#profile" class="dropdown-link"><span class="en">Company Profile</span><span class="ar">ملف الشركة</span><span class="zh">公司简介</span></a></div>
+                            <div class="dropdown-item"><a href="#culture" class="dropdown-link"><span class="en">Corporate Culture</span><span class="ar">ثقافة الشركة</span><span class="zh">企业文化</span></a></div>
+                            <div class="dropdown-item"><a href="#qualifications" class="dropdown-link"><span class="en">Qualifications</span><span class="ar">المؤهلات</span><span class="zh">资质荣誉</span></a></div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#services" class="nav-link">
+                            <span class="en">Services</span><span class="ar">خدماتنا</span><span class="zh">核心业务</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item"><a href="#service-sea" class="dropdown-link"><span class="en">Ocean Freight</span><span class="ar">الشحن البحري</span><span class="zh">海运服务</span></a></div>
+                            <div class="dropdown-item"><a href="#service-air" class="dropdown-link"><span class="en">Air Freight</span><span class="ar">الشحن الجوي</span><span class="zh">空运服务</span></a></div>
+                            <div class="dropdown-item"><a href="#service-middle-east" class="dropdown-link"><span class="en">Middle East Line</span><span class="ar">خط الشرق الأوسط</span><span class="zh">中东专线</span></a></div>
+                            <div class="dropdown-item"><a href="#service-warehouse" class="dropdown-link"><span class="en">Warehousing</span><span class="ar">التخزين</span><span class="zh">仓储物流</span></a></div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#process" class="nav-link">
+                            <span class="en">Process</span><span class="ar">العملية</span><span class="zh">服务流程</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item"><a href="#workflow-steps" class="dropdown-link"><span class="en">Standard Workflow</span><span class="ar">سير العمل</span><span class="zh">标准化作业</span></a></div>
+                            <div class="dropdown-item"><a href="#process-standards" class="dropdown-link"><span class="en">Quality & Safety</span><span class="ar">الجودة والسلامة</span><span class="zh">合规与安全</span></a></div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#contact-us" class="nav-link">
+                            <span class="en">Contact</span><span class="ar">اتصل بنا</span><span class="zh">联系我们</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item"><a href="#contact-info" class="dropdown-link"><span class="en">Contact Info</span><span class="ar">معلومات الاتصال</span><span class="zh">联系方式</span></a></div>
+                            <div class="dropdown-item"><a href="#quote-form" class="dropdown-link"><span class="en">Get a Quote</span><span class="ar">طلب عرض سعر</span><span class="zh">在线询价</span></a></div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <button class="mobile-toggle" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+        </div>
     </header>
+
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-header">
+            <img src="英文 单版.png" alt="Logo" class="mobile-logo">
+            <div class="mobile-close" onclick="closeMobileMenu()"><i class="fas fa-times"></i></div>
+        </div>
+        
+        <div class="mobile-nav-item" onclick="toggleSubMenu(this)">
+            <a href="javascript:void(0)" class="mobile-nav-link"><span class="en">About</span><span class="zh">关于我们</span><i class="fas fa-chevron-down"></i></a>
+            <div class="mobile-sub-menu">
+                <a href="#profile" class="mobile-sub-link" onclick="closeMobileMenu()"><span class="en">Profile</span><span class="zh">简介</span></a>
+                <a href="#culture" class="mobile-sub-link" onclick="closeMobileMenu()"><span class="en">Culture</span><span class="zh">文化</span></a>
+            </div>
+        </div>
+        <div class="mobile-nav-item" onclick="toggleSubMenu(this)">
+            <a href="javascript:void(0)" class="mobile-nav-link"><span class="en">Services</span><span class="zh">业务</span><i class="fas fa-chevron-down"></i></a>
+            <div class="mobile-sub-menu">
+                <a href="#service-sea" class="mobile-sub-link" onclick="closeMobileMenu()"><span class="en">Ocean</span><span class="zh">海运</span></a>
+                <a href="#service-air" class="mobile-sub-link" onclick="closeMobileMenu()"><span class="en">Air</span><span class="zh">空运</span></a>
+            </div>
+        </div>
+        <div class="mobile-nav-item"><a href="#process" class="mobile-nav-link" onclick="closeMobileMenu()"><span class="en">Process</span><span class="zh">流程</span></a></div>
+        <div class="mobile-nav-item"><a href="#contact-us" class="mobile-nav-link" onclick="closeMobileMenu()"><span class="en">Contact</span><span class="zh">联系</span></a></div>
+    </div>
 
     <section id="about" class="hero">
         <div class="hero-bg"></div>
         <div class="container">
-            <div class="hero-text" data-aos="fade-up" data-aos-duration="1000">
+            <div id="profile" class="hero-text" data-aos="fade-up" data-aos-duration="1000">
                 <div style="display:inline-block; background:rgba(243,146,0,0.2); border:1px solid var(--accent); color:var(--accent); padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:20px;">
-                    <span class="en">EST. 2006</span>
-                    <span class="ar">تأسست عام 2006</span>
-                    <span class="zh">专注国际物流 20 年</span>
+                    <span class="en">EST. 2006</span><span class="ar">تأسست عام 2006</span><span class="zh">专注国际物流 20 年</span>
                 </div>
-                
                 <h1 class="en">Connecting The World,<br>Delivering Value.</h1>
                 <h1 class="ar">نربط العالم،<br>ونسلم القيمة.</h1>
                 <h1 class="zh">连接全球<br>交付信任与价值</h1>
-                
-                <p class="en">Your trusted partner in global supply chain solutions. Specialized in Middle East routes with NVOCC & JCTrans certifications.</p>
-                <p class="ar">شريكك الموثوق في حلول سلاسل التوريد العالمية. متخصصون في خطوط الشرق الأوسط مع اعتمادات NVOCC و JCTrans.</p>
-                <p class="zh">颖运国际物流 (Inteltrans) 是您值得信赖的全球供应链合作伙伴。深耕中东航线，拥有 NVOCC 及 JCTrans 双重资质认证。</p>
-                
-                <div class="badge-group">
+                <p class="en">Your trusted partner in global supply chain solutions. Specialized in Middle East routes.</p>
+                <p class="ar">شريكك الموثوق في حلول سلاسل التوريد العالمية.</p>
+                <p class="zh">颖运国际物流 (Inteltrans) 是您值得信赖的全球供应链合作伙伴。</p>
+                <div id="qualifications" class="badge-group">
                     <div class="badge-card"><span>NVOCC License</span><strong>MOC-NV 33070</strong></div>
                     <div class="badge-card"><span>JCTrans Member</span><strong>ID: 108966</strong></div>
                 </div>
@@ -327,183 +413,124 @@
         </div>
     </section>
 
-    <div class="container">
-        <div class="stats-section" data-aos="fade-up" data-aos-delay="200">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3><span class="counter">20</span>+</h3>
-                    <p><span class="en">Years Exp</span><span class="ar">سنة خبرة</span><span class="zh">年行业经验</span></p>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <h3><span class="counter">100</span>+</h3>
-                    <p><span class="en">Global Agents</span><span class="ar">وكيل عالمي</span><span class="zh">全球代理</span></p>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <h3><span class="counter">500</span>+</h3>
-                    <p><span class="en">Clients</span><span class="ar">عميل سعيد</span><span class="zh">知名客户</span></p>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <h3>24/7</h3>
-                    <p><span class="en">Support</span><span class="ar">دعم فني</span><span class="zh">全天候响应</span></p>
-                </div>
+    <section id="culture" class="section-padding bg-light">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="en">Corporate Culture</h2><h2 class="ar">ثقافة الشركة</h2><h2 class="zh">企业文化</h2>
+            </div>
+            <div class="content-block text-content" data-aos="fade-up" style="max-width:900px; margin:0 auto; text-align:center;">
+                <p class="en">We believe in "Professionalism, Integrity, and Efficiency." Our mission is to simplify global trade through innovative logistics solutions.</p>
+                <p class="ar">نؤمن بـ "الاحترافية، والنزاهة، والكفاءة". مهمتنا هي تبسيط التجارة العالمية.</p>
+                <p class="zh">我们秉承“专业、诚信、高效”的核心价值观，致力于通过创新的物流方案简化全球贸易流程，为客户创造可持续的价值。</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <section id="services" class="section-padding bg-light">
+    <section id="services" class="section-padding">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <h2 class="en">Our Expertise</h2><h2 class="ar">خدماتنا المتميزة</h2><h2 class="zh">全方位核心业务</h2>
-                <p class="en">Comprehensive logistics solutions tailored for your business needs.</p>
-                <p class="ar">حلول لوجستية شاملة مصممة خصيصاً لاحتياجات عملك.</p>
-                <p class="zh">为您量身定制的综合物流解决方案。</p>
             </div>
             <div class="services-grid">
-                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="img-wrapper">
-                        <img src="仓库正面.png" alt="Ocean Freight" style="object-position: center 35%;">
-                    </div>
+                <div id="service-sea" class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="img-wrapper"><img src="仓库正面.png" alt="Ocean Freight" style="object-position: center 35%;"></div>
                     <div class="service-content">
-                        <h3 class="en">Ocean Freight (FCL/LCL)</h3><h3 class="ar">الشحن البحري (FCL/LCL)</h3><h3 class="zh">全球集装箱海运 (FCL/LCL)</h3>
-                        <p class="en">Strategic FCL/LCL services covering Asia to Middle East routes with full end-to-end visibility.</p>
-                        <p class="ar">خدمات شحن استراتيجية تغطي خطوط آسيا إلى الشرق الأوسط مع رؤية شاملة من الباب إلى الباب.</p>
-                        <p class="zh">深耕中东及亚洲航线，提供极具竞争力的整柜与拼箱方案，涵盖订舱、清关、门到门全流程服务。</p>
-                        <span class="read-more"><span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> <i class="fas fa-arrow-right"></i></span>
+                        <h3 class="en">Ocean Freight</h3><h3 class="ar">الشحن البحري</h3><h3 class="zh">全球集装箱海运</h3>
+                        <p class="en">Strategic FCL/LCL services covering Asia to Middle East routes.</p>
+                        <p class="ar">خدمات شحن استراتيجية تغطي خطوط آسيا إلى الشرق الأوسط.</p>
+                        <p class="zh">深耕中东及亚洲航线，提供极具竞争力的整柜与拼箱方案。</p>
+                        <a href="#quote-form" class="service-btn"><span class="en">Get Quote</span><span class="ar">طلب سعر</span><span class="zh">立即询价</span> <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-
-                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="img-wrapper">
-                        <img src="空运机场.jpg" alt="Air Freight">
-                    </div>
+                <div id="service-air" class="service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="img-wrapper"><img src="空运机场.jpg" alt="Air Freight"></div>
                     <div class="service-content">
-                        <h3 class="en">Air Transport</h3><h3 class="ar">الشحن الجوي السريع</h3><h3 class="zh">极速空运与多式联运</h3>
-                        <p class="en">Direct airline partnerships for high-value cargo, ensuring speed and reliability.</p>
-                        <p class="ar">شراكات مباشرة مع خطوط الطيران للبضائع عالية القيمة، لضمان السرعة والموثوقية.</p>
-                        <p class="zh">对接全球干线航空，专注高价值货物、医疗器械及电子产品，保障货物安全、精准、准时送达。</p>
-                        <span class="read-more"><span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> <i class="fas fa-arrow-right"></i></span>
+                        <h3 class="en">Air Transport</h3><h3 class="ar">الشحن الجوي</h3><h3 class="zh">极速空运与多式联运</h3>
+                        <p class="en">Direct airline partnerships for high-value cargo.</p>
+                        <p class="ar">شراكات مباشرة مع خطوط الطيران للبضائع عالية القيمة.</p>
+                        <p class="zh">对接全球干线航空，专注高价值货物、医疗器械及电子产品。</p>
+                        <a href="#quote-form" class="service-btn"><span class="en">Get Quote</span><span class="ar">طلب سعر</span><span class="zh">立即询价</span> <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-
-                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800" alt="Middle East">
-                    </div>
+                <div id="service-middle-east" class="service-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800" alt="Middle East"></div>
                     <div class="service-content">
-                        <h3 class="en">Middle East Expert (DDP)</h3><h3 class="ar">خبراء الشرق الأوسط (DDP)</h3><h3 class="zh">中东双清专线 (DDP/DDU)</h3>
-                        <p class="en">Specialized DDP/DDU services for GCC countries, simplifying complex customs.</p>
-                        <p class="ar">خدمات DDP/DDU المتخصصة لدول مجلس التعاون الخليجي، لتبسيط إجراءات الجمارك المعقدة.</p>
-                        <p class="zh">提供沙特、阿联酋等国的一站式双清到门服务，解决复杂关务难题，助力中国品牌合规出海。</p>
-                        <span class="read-more"><span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> <i class="fas fa-arrow-right"></i></span>
+                        <h3 class="en">Middle East DDP</h3><h3 class="ar">خبراء الشرق الأوسط</h3><h3 class="zh">中东双清专线</h3>
+                        <p class="en">Specialized DDP/DDU services for GCC countries.</p>
+                        <p class="ar">خدمات DDP/DDU المتخصصة لدول مجلس التعاون الخليجي.</p>
+                        <p class="zh">提供沙特、阿联酋等国的一站式双清到门服务。</p>
+                        <a href="#quote-form" class="service-btn"><span class="en">Get Quote</span><span class="ar">طلب سعر</span><span class="zh">立即询价</span> <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-
-                <div class="service-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="img-wrapper">
-                        <img src="仓库背面.png" alt="Warehousing">
-                    </div>
+                <div id="service-warehouse" class="service-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="img-wrapper"><img src="仓库背面.png" alt="Warehousing"></div>
                     <div class="service-content">
-                        <h3 class="en">Warehousing & Solutions</h3><h3 class="ar">التخزين والحلول اللوجستية</h3><h3 class="zh">仓储增值与项目物流</h3>
-                        <p class="en">Customized solutions for over-sized cargo, labeling, and distribution.</p>
-                        <p class="ar">حلول مخصصة للبضائع الكبيرة، وضع الملصقات، وخدمات التوزيع المتكاملة.</p>
-                        <p class="zh">提供大件设备运输、海外仓储、贴标及分拨服务，针对不同行业定制个性化供应链方案。</p>
-                        <span class="read-more"><span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> <i class="fas fa-arrow-right"></i></span>
+                        <h3 class="en">Warehousing</h3><h3 class="ar">التخزين</h3><h3 class="zh">仓储增值与项目物流</h3>
+                        <p class="en">Customized solutions for over-sized cargo & distribution.</p>
+                        <p class="ar">حلول مخصصة للبضائع الكبيرة والتوزيع.</p>
+                        <p class="zh">提供大件设备运输、海外仓储、贴标及分拨服务。</p>
+                        <a href="#quote-form" class="service-btn"><span class="en">Get Quote</span><span class="ar">طلب سعر</span><span class="zh">立即询价</span> <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="process" class="section-padding" style="background: white;">
+    <section id="process" class="section-padding bg-light">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <h2 class="en">How We Work</h2><h2 class="ar">كيف نعمل</h2><h2 class="zh">服务流程</h2>
             </div>
-            <div class="workflow-grid" data-aos="fade-up">
+            <div id="workflow-steps" class="workflow-grid" data-aos="fade-up">
                 <div class="workflow-line"></div>
-                
                 <div class="workflow-item">
                     <div class="workflow-icon"><i class="fas fa-comments"></i></div>
                     <h4 class="en">Consultation</h4><h4 class="ar">استشارة</h4><h4 class="zh">需求咨询</h4>
-                    <p class="en">We analyze your shipping needs.</p><p class="ar">نحلل احتياجات الشحن الخاصة بك.</p><p class="zh">专业团队分析您的运输需求。</p>
                 </div>
                 <div class="workflow-item">
                     <div class="workflow-icon"><i class="fas fa-file-signature"></i></div>
                     <h4 class="en">Solution</h4><h4 class="ar">الحلول</h4><h4 class="zh">定制方案</h4>
-                    <p class="en">Best route & price proposal.</p><p class="ar">أفضل طريق واقتراح سعر.</p><p class="zh">提供最优航线与报价方案。</p>
                 </div>
                 <div class="workflow-item">
                     <div class="workflow-icon"><i class="fas fa-ship"></i></div>
                     <h4 class="en">Execution</h4><h4 class="ar">التنفيذ</h4><h4 class="zh">高效执行</h4>
-                    <p class="en">Seamless booking & shipping.</p><p class="ar">حجز وشحن سلس.</p><p class="zh">无缝衔接订舱、报关与运输。</p>
                 </div>
                 <div class="workflow-item">
                     <div class="workflow-icon"><i class="fas fa-box-open"></i></div>
                     <h4 class="en">Delivery</h4><h4 class="ar">التوصيل</h4><h4 class="zh">安全交付</h4>
-                    <p class="en">Safe arrival at destination.</p><p class="ar">وصول آمن إلى الوجهة.</p><p class="zh">货物安全准时送达目的地。</p>
                 </div>
+            </div>
+            
+            <div id="process-standards" class="content-block text-content" data-aos="fade-up" style="max-width:800px; margin:60px auto 0; text-align:center; padding:30px; background:white; border-radius:8px; box-shadow:var(--shadow-card);">
+                <h3 class="en">Safety & Compliance</h3><h3 class="ar">السلامة والامتثال</h3><h3 class="zh">合规与安全保障</h3>
+                <p class="en">We strictly adhere to international shipping regulations and safety standards. Every shipment is tracked and monitored.</p>
+                <p class="ar">نلتزم بصرامة بلوائح الشحن الدولية ومعايير السلامة.</p>
+                <p class="zh">我们严格遵守国际运输法规与安全标准，每一票货物都经过严格的合规性审查，并提供全程可视化追踪，确保货物安全无忧。</p>
             </div>
         </div>
     </section>
 
-    <section id="contact-us" class="section-padding bg-light">
+    <section id="contact-us" class="section-padding">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
-                <h2 class="en">Get A Quote</h2><h2 class="ar">احصل على عرض سعر</h2><h2 class="zh">在线询价</h2>
+                <h2 class="en">Get In Touch</h2><h2 class="ar">اتصل بنا</h2><h2 class="zh">联系我们</h2>
             </div>
             <div class="contact-container" data-aos="fade-up">
-                <div class="contact-info">
+                <div id="contact-info" class="contact-info">
                     <div>
-                        <h3 class="en" style="font-size:1.8rem; margin-bottom:20px;">Contact Info</h3>
-                        <h3 class="ar" style="font-size:1.8rem; margin-bottom:20px;">معلومات الاتصال</h3>
-                        <h3 class="zh" style="font-size:1.8rem; margin-bottom:20px;">联系方式</h3>
-                        
-                        <div class="info-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <h5 class="en">Headquarters</h5><h5 class="ar">المقر الرئيسي</h5><h5 class="zh">总部地址</h5>
-                                <p class="en">RongDe Times Square, Shenzhen, China</p>
-                                <p class="ar">ساحة رونغدي تايمز، شنتشن، الصين</p>
-                                <p class="zh">中国深圳市龙岗区荣德时代广场B座</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <h5 class="en">Email Us</h5><h5 class="ar">راسلنا</h5><h5 class="zh">电子邮箱</h5>
-                                <p>info@inteltrans.net</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <div>
-                                <h5 class="en">Call Us</h5><h5 class="ar">اتصل بنا</h5><h5 class="zh">联系电话</h5>
-                                <p>+86 0755 2891 3742</p>
-                            </div>
-                        </div>
+                        <h3 class="en" style="margin-bottom:20px;">Contact Info</h3>
+                        <h3 class="ar" style="margin-bottom:20px;">معلومات الاتصال</h3>
+                        <h3 class="zh" style="margin-bottom:20px;">联系方式</h3>
+                        <div class="info-item"><i class="fas fa-map-marker-alt"></i><div><h5 class="en">Headquarters</h5><h5 class="ar">المقر الرئيسي</h5><h5 class="zh">总部地址</h5><p class="en">RongDe Times Square, Shenzhen</p><p class="ar">ساحة رونغدي تايمز، شنتشن</p><p class="zh">深圳市龙岗区荣德时代广场B座</p></div></div>
+                        <div class="info-item"><i class="fas fa-envelope"></i><div><h5 class="en">Email</h5><h5 class="ar">البريد</h5><h5 class="zh">邮箱</h5><p>info@inteltrans.net</p></div></div>
                     </div>
                 </div>
-                
-                <div class="contact-form-wrapper">
+                <div id="quote-form" class="contact-form-wrapper">
                     <form action="mailto:info@inteltrans.net" method="post" enctype="text/plain">
-                        <div class="form-group">
-                            <label class="en">Your Name</label><label class="ar">الاسم</label><label class="zh">您的姓名</label>
-                            <input type="text" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="en">Email Address</label><label class="ar">البريد الإلكتروني</label><label class="zh">电子邮箱</label>
-                            <input type="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="en">Message</label><label class="ar">الرسالة</label><label class="zh">留言内容</label>
-                            <textarea name="message" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">
-                            <span class="en">Send Message</span><span class="ar">إرسال الرسالة</span><span class="zh">发送留言</span>
-                        </button>
+                        <div class="form-group"><label class="en">Name</label><label class="ar">الاسم</label><label class="zh">姓名</label><input type="text" name="name" required></div>
+                        <div class="form-group"><label class="en">Email</label><label class="ar">البريد</label><label class="zh">邮箱</label><input type="email" name="email" required></div>
+                        <div class="form-group"><label class="en">Message</label><label class="ar">الرسالة</label><label class="zh">留言</label><textarea name="message" rows="4" required></textarea></div>
+                        <button type="submit" class="submit-btn"><span class="en">Send Inquiry</span><span class="ar">إرسال استفسار</span><span class="zh">发送询价</span></button>
                     </form>
                 </div>
             </div>
@@ -514,23 +541,17 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <div class="footer-logo">
-                        <img src="英文 单版.png" alt="Inteltrans">
-                    </div>
-                    <p class="en" style="line-height: 1.8; opacity: 0.8;">Inteltrans upholds "Professionalism, Integrity, and Efficiency," optimizing supply chain costs through excellence.</p>
-                    <p class="ar" style="line-height: 1.8; opacity: 0.8;">تلتزم إنتلترانس بـ "الاحترافية، والنزاهة، والكفاءة"، مما يحسن تكاليف سلاسل التوريد من خلال التميز.</p>
-                    <p class="zh" style="line-height: 1.8; opacity: 0.8;">颖运国际秉承“专业、诚信、高效”的服务理念，致力于通过数字化的管理与卓越的线下执行力，为全球客户优化物流成本。</p>
+                    <div class="footer-logo"><img src="英文 单版.png" alt="Logo"></div>
+                    <p class="en" style="opacity:0.8;">Inteltrans upholds "Professionalism, Integrity, and Efficiency."</p>
+                    <p class="zh" style="opacity:0.8;">颖运国际秉承“专业、诚信、高效”的服务理念。</p>
                 </div>
-
                 <div class="footer-col">
                     <h4 class="en">Why Us</h4><h4 class="ar">لماذا نحن</h4><h4 class="zh">核心优势</h4>
                     <ul class="footer-list">
-                        <li><i class="fas fa-check-circle"></i> <span class="en">20 Years ME Focus</span><span class="ar">20 عاماً في الشرق الأوسط</span><span class="zh">深耕进出口 20 载</span></li>
-                        <li><i class="fas fa-check-circle"></i> <span class="en">Class-A Broker</span><span class="ar">وسيط جمركي فئة A</span><span class="zh">A类报关资质</span></li>
-                        <li><i class="fas fa-check-circle"></i> <span class="en">100+ Agents</span><span class="ar">أكثر من 100 وكيل</span><span class="zh">全球 100+ 代理</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span class="en">20 Years ME Focus</span><span class="zh">深耕进出口 20 载</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span class="en">Class-A Broker</span><span class="zh">A类进出口报关资质</span></li>
                     </ul>
                 </div>
-
                 <div id="partners" class="footer-col">
                     <h4 class="en">Partners</h4><h4 class="ar">شركاؤنا</h4><h4 class="zh">合作品牌</h4>
                     <div class="partner-display" id="brand-rotator">
@@ -540,30 +561,19 @@
                         <img src="ZOOMLION.png" alt="Zoomlion">
                     </div>
                 </div>
-
                 <div class="footer-col">
                     <h4 class="en">Contact</h4><h4 class="ar">اتصل بنا</h4><h4 class="zh">联系我们</h4>
                     <ul class="footer-list">
                         <li><i class="fas fa-envelope"></i> info@inteltrans.net</li>
                         <li><i class="fas fa-phone-alt"></i> +86 0755 2891 3742</li>
-                        <li><i class="fas fa-map-marker-alt"></i> 
-                            <span class="en">RongDe Times Square, Shenzhen</span>
-                            <span class="ar">ساحة رونغدي تايمز، شنتشن</span>
-                            <span class="zh">深圳市龙岗区荣德时代广场B座</span>
-                        </li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="copyright">
-                &copy; 2017 Inteltrans International Logistics Co., Ltd. <span class="en">All Rights Reserved.</span><span class="ar">كل الحقوق محفوظة.</span><span class="zh">版权所有</span>
-            </div>
+            <div class="copyright">&copy; 2017 Inteltrans International Logistics Co., Ltd. <span class="en">All Rights Reserved.</span><span class="ar">كل الحقوق محفوظة.</span><span class="zh">版权所有</span></div>
         </div>
     </footer>
 
-    <a href="tel:+86075528913742" class="float-btn" title="Call Us">
-        <i class="fas fa-phone"></i>
-    </a>
+    <a href="tel:+86075528913742" class="float-btn"><i class="fas fa-phone"></i></a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -575,52 +585,35 @@
             'zh': { class: 'lang-zh', label: '中文' }
         };
 
-        function toggleDropdown(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('langMenu');
-            menu.classList.toggle('show');
-            document.querySelector('.lang-btn').classList.toggle('active');
-        }
-
         function setLang(langCode) {
             document.body.classList.remove('lang-en', 'lang-ar', 'lang-zh');
             const target = langMap[langCode];
             document.body.classList.add(target.class);
-            document.getElementById('current-lang').innerText = target.label;
-            
-            const menu = document.getElementById('langMenu');
-            menu.classList.remove('show');
-            document.querySelector('.lang-btn').classList.remove('active');
-            
+            document.getElementById('current-lang-top').innerText = target.label;
             setTimeout(function(){ AOS.refresh(); }, 100);
         }
 
-        window.onclick = function(event) {
-            if (!event.target.closest('.lang-dropdown')) {
-                const menu = document.getElementById('langMenu');
-                if (menu.classList.contains('show')) {
-                    menu.classList.remove('show');
-                    document.querySelector('.lang-btn').classList.remove('active');
-                }
-            }
-        }
+        // Mobile Menu
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        function toggleMobileMenu() { mobileMenu.classList.toggle('open'); mobileOverlay.classList.toggle('open'); }
+        function closeMobileMenu() { mobileMenu.classList.remove('open'); mobileOverlay.classList.remove('open'); }
+        function toggleSubMenu(element) { element.classList.toggle('active'); }
 
+        // Stats
         const counters = document.querySelectorAll('.counter');
         counters.forEach(counter => {
             const updateCount = () => {
                 const target = +counter.getAttribute('data-target') || +counter.innerText;
                 const count = +counter.innerText;
                 const inc = target / 100;
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(updateCount, 20);
-                } else {
-                    counter.innerText = target;
-                }
+                if (count < target) { counter.innerText = Math.ceil(count + inc); setTimeout(updateCount, 20); } 
+                else { counter.innerText = target; }
             };
             setTimeout(updateCount, 1000);
         });
 
+        // Partner Rotator
         const brands = document.querySelectorAll('#brand-rotator img');
         if(brands.length > 0) {
             let currentBrand = 0;
@@ -630,6 +623,21 @@
                 brands[currentBrand].classList.add('active');
             }, 3000); 
         }
+
+        // ScrollSpy
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) { current = section.getAttribute('id'); }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) { link.classList.add('active'); }
+            });
+        });
     </script>
 </body>
 </html>
