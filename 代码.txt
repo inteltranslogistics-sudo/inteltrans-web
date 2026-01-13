@@ -10,6 +10,7 @@
     
     <style>
         :root {
+            /* 核心品牌色：与 Logo 一致的深蓝 */
             --primary: #00338d; 
             --accent: #f39200;  
             --dark: #0a121e;
@@ -40,9 +41,18 @@
         .logo img { height: 45px; width: auto; object-fit: contain; }
         
         nav ul { display: flex; gap: 40px; list-style: none; }
-        nav a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 15px; position: relative; padding-bottom: 5px; }
-        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--primary); transition: 0.3s; }
-        nav a:hover { color: var(--primary); }
+        
+        /* [修改点 1] 导航栏文字颜色调整 */
+        nav a { 
+            text-decoration: none; 
+            color: var(--primary); /* 改为 Logo 蓝 */
+            font-weight: 700;      /* 加粗字体 */
+            font-size: 15px; 
+            position: relative; 
+            padding-bottom: 5px; 
+        }
+        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: 0.3s; }
+        nav a:hover { color: var(--accent); }
         nav a:hover::after { width: 100%; }
 
         .btn-lang { 
@@ -60,10 +70,10 @@
         /* 背景图动态层 */
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* 建议：Hero 背景图也可以使用您的实拍图 仓库正面.jpg，只需替换下方的 url */
             background: linear-gradient(rgba(0,30,80,0.85), rgba(0,10,20,0.7)), url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=1600'); 
             background-size: cover; background-position: center;
             z-index: -1;
-            /* Ken Burns Effect: 缓慢放大，制造视频感 */
             animation: kenBurns 20s infinite alternate;
         }
         @keyframes kenBurns {
@@ -150,9 +160,9 @@
         /* --- Responsive --- */
         @media (max-width: 900px) {
             .hero-text h1 { font-size: 2.2rem; }
-            .stats-section { display: none; } /* 手机端隐藏统计条以简化 */
+            .stats-section { display: none; }
             .services-grid, .footer-grid { grid-template-columns: 1fr; }
-            nav { display: none; } /* 简单处理：手机端隐藏菜单，依靠CTA */
+            nav { display: none; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
@@ -181,7 +191,8 @@
     </header>
 
     <section id="about" class="hero">
-        <div class="hero-bg"></div> <div class="container">
+        <div class="hero-bg"></div>
+        <div class="container">
             <div class="hero-text" data-aos="fade-up" data-aos-duration="1000">
                 <div style="display:inline-block; background:rgba(243,146,0,0.2); border:1px solid var(--accent); color:var(--accent); padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:20px;">
                     <span class="zh">专注国际物流 20 年</span><span class="en">EST. 2006</span>
@@ -235,7 +246,7 @@
                 
                 <div class="service-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="img-wrapper">
-                        <img src="仓库正面.jpg" alt="Ocean Freight">
+                        <img src="仓库正面.png" alt="Ocean Freight" style="width: 100%; height: 100%; object-fit: cover; object-position: center 35%;">
                     </div>
                     <div class="service-content">
                         <h3 class="zh">全球集装箱海运 (FCL/LCL)</h3><h3 class="en">Ocean Freight</h3>
@@ -247,7 +258,7 @@
 
                 <div class="service-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1524850011238-e3d235c7d4c9?auto=format&fit=crop&q=80&w=800" alt="Air Freight">
+                        <img src="空运机场.jpg" alt="Air Freight">
                     </div>
                     <div class="service-content">
                         <h3 class="zh">极速空运与多式联运</h3><h3 class="en">Air Transport</h3>
@@ -271,7 +282,7 @@
 
                 <div class="service-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=800" alt="Warehousing">
+                        <img src="仓库背面.png" alt="Warehousing">
                     </div>
                     <div class="service-content">
                         <h3 class="zh">仓储增值与项目物流</h3><h3 class="en">Warehousing</h3>
@@ -346,30 +357,20 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 1. 初始化动画库
-        AOS.init({
-            offset: 120, // 触发动画的距离
-            duration: 800, // 动画持续时间
-            easing: 'ease-out-cubic', // 动画曲线
-            once: true // 仅触发一次，避免上下滚动重复
-        });
-
-        // 2. 语言切换逻辑
+        AOS.init({ offset: 120, duration: 800, easing: 'ease-out-cubic', once: true });
+        
         function toggleLang() {
             document.body.classList.toggle('lang-zh');
             document.body.classList.toggle('lang-en');
-            // 切换语言时刷新动画位置
             setTimeout(function(){ AOS.refresh(); }, 100);
         }
 
-        // 3. 数字增长动画逻辑
         const counters = document.querySelectorAll('.counter');
         counters.forEach(counter => {
             const updateCount = () => {
                 const target = +counter.getAttribute('data-target') || +counter.innerText;
                 const count = +counter.innerText;
-                const inc = target / 100; // 增长速度
-
+                const inc = target / 100;
                 if (count < target) {
                     counter.innerText = Math.ceil(count + inc);
                     setTimeout(updateCount, 20);
@@ -377,7 +378,6 @@
                     counter.innerText = target;
                 }
             };
-            // 简单触发：页面加载后1秒开始计数
             setTimeout(updateCount, 1000);
         });
     </script>
