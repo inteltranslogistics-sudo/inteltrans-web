@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Inteltrans - Professional International Logistics Service Provider. Ocean Freight, Air Freight, and Project Cargo.">
-    <title>Inteltrans - 颖运国际物流 | 全球端到端物流解决方案专家</title>
+    <title>Inteltrans - Global Logistics Solutions</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         :root {
-            /* 核心品牌色：与 Logo 一致的深蓝 */
             --primary: #00338d; 
             --accent: #f39200;  
             --dark: #0a121e;
@@ -18,16 +17,40 @@
             --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", sans-serif; }
         body { color: #333; line-height: 1.6; overflow-x: hidden; background: #fff; scroll-behavior: smooth; }
 
-        /* --- 语言控制 --- */
-        body.lang-en .zh { display: none !important; }
-        body.lang-zh .en { display: none !important; }
+        /* --- 多语言显示控制 --- */
+        .en, .zh, .ar { display: none; }
+        
+        /* English (默认) */
+        body.lang-en .en { display: inline-block; }
+        body.lang-en div.en, body.lang-en p.en, body.lang-en h1.en, body.lang-en h2.en, body.lang-en h3.en, body.lang-en h4.en, body.lang-en ul.en { display: block; }
+        
+        /* Chinese */
+        body.lang-zh .zh { display: inline-block; }
+        body.lang-zh div.zh, body.lang-zh p.zh, body.lang-zh h1.zh, body.lang-zh h2.zh, body.lang-zh h3.zh, body.lang-zh h4.zh, body.lang-zh ul.zh { display: block; }
+
+        /* Arabic (RTL模式) */
+        body.lang-ar .ar { display: inline-block; }
+        body.lang-ar div.ar, body.lang-ar p.ar, body.lang-ar h1.ar, body.lang-ar h2.ar, body.lang-ar h3.ar, body.lang-ar h4.ar, body.lang-ar ul.ar { display: block; }
+        
+        /* 阿拉伯语特殊镜像排版 */
+        body.lang-ar { 
+            direction: rtl; 
+            text-align: right; 
+            font-family: "Tahoma", "Arial", sans-serif; 
+        }
+        body.lang-ar .nav-inner { flex-direction: row; }
+        body.lang-ar .service-card .read-more i { transform: rotate(180deg); margin-right: 5px; }
+        body.lang-ar .footer-list i { margin-left: 10px; margin-right: 0; }
+        body.lang-ar .badge-card { border-left: none; border-right: 4px solid var(--accent); }
+        /* RTL 下修正 Logo 位置 */
+        body.lang-ar .partner-display img { left: auto; right: 0; }
 
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* --- Header (玻璃拟态效果) --- */
+        /* --- Header --- */
         header { 
             background: rgba(255,255,255,0.95); 
             backdrop-filter: blur(10px);
@@ -42,7 +65,6 @@
         
         nav ul { display: flex; gap: 40px; list-style: none; }
         
-        /* 导航栏样式：深蓝色 */
         nav a { 
             text-decoration: none; 
             color: var(--primary); 
@@ -55,19 +77,78 @@
         nav a:hover { color: var(--accent); }
         nav a:hover::after { width: 100%; }
 
-        .btn-lang { 
-            border: 1px solid var(--primary); color: var(--primary); background: transparent; 
-            padding: 6px 16px; border-radius: 50px; cursor: pointer; font-size: 12px; font-weight: bold; 
-            transition: var(--transition); display: flex; align-items: center; gap: 5px;
+        /* --- [升级] 下拉式语言菜单 --- */
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
         }
-        .btn-lang:hover { background: var(--primary); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,51,141,0.2); }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .lang-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
 
-        /* --- Hero Section (仿视频呼吸感动画) --- */
+        /* 下拉菜单内容 */
+        .lang-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1001;
+            margin-top: 10px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        /* 鼠标移入显示菜单 */
+        .lang-dropdown:hover .lang-content {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .lang-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .lang-content a:hover {
+            background-color: var(--light-bg);
+            color: var(--primary);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* --- Hero Section --- */
         .hero { 
             height: 100vh; position: relative; overflow: hidden;
             display: flex; align-items: center; color: white; padding-top: 80px;
         }
-        /* 背景图动态层 */
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(0,30,80,0.85), rgba(0,10,20,0.7)), url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=1600'); 
@@ -94,7 +175,7 @@
         .badge-card span { display: block; font-size: 11px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px; letter-spacing: 1px; }
         .badge-card strong { color: white; font-size: 1.4rem; display: block; }
 
-        /* --- Stats Section --- */
+        /* --- Stats --- */
         .stats-section { background: white; padding: 40px 0; margin-top: -60px; position: relative; z-index: 10; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border-radius: 8px; max-width: 1100px; margin-left: auto; margin-right: auto; }
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 20px; }
         .stat-item h3 { font-size: 2.5rem; color: var(--primary); font-weight: 800; margin-bottom: 5px; }
@@ -142,32 +223,29 @@
         .footer-col h4 { color: white; margin-bottom: 25px; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
         
         .footer-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; list-style: none; }
-        .footer-list i { color: var(--accent); font-size: 16px; }
+        .footer-list i { color: var(--accent); font-size: 16px; margin-right: 10px; } /* LTR 默认 */
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-top: 60px; text-align: center; font-size: 0.85rem; }
 
-        /* --- [关键修改：合作品牌样式修正] --- */
+        /* --- Partner Logos (JPG修复版) --- */
         .partner-display {
-            height: 90px; /* 增加高度以容纳大Logo */
+            height: 90px;
             position: relative;
             overflow: hidden;
             margin-top: 10px;
         }
         .partner-display img {
-            height: 65px; /* 放大图片尺寸 */
+            height: 65px;
             width: auto;
             position: absolute;
             top: 50%;
             left: 0;
-            transform: translateY(-50%); /* 绝对垂直居中 */
+            transform: translateY(-50%);
             opacity: 0;
             transition: opacity 1s ease-in-out;
-            /* ⚠️ 重要：已删除滤镜 filter: brightness(0) invert(1); */
-            /* 这样您的白色背景 JPG 图片就能正常显示了，不会变成白块 */
-            border-radius: 4px; /* 给白色图片加一点圆角，更美观 */
+            border-radius: 4px;
         }
-        .partner-display img.active {
-            opacity: 1; /* 显示时完全不透明 */
-        }
+        
+        .partner-display img.active { opacity: 1; }
 
         /* --- Floating Button --- */
         .float-btn {
@@ -190,7 +268,7 @@
         }
     </style>
 </head>
-<body class="lang-zh">
+<body class="lang-en">
 
     <header>
         <div class="container nav-inner">
@@ -199,16 +277,43 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#about"><span class="zh">关于我们</span><span class="en">About</span></a></li>
-                    <li><a href="#services"><span class="zh">核心业务</span><span class="en">Services</span></a></li>
-                    <li><a href="#partners"><span class="zh">合作伙伴</span><span class="en">Partners</span></a></li>
-                    <li><a href="#contact"><span class="zh">联系我们</span><span class="en">Contact</span></a></li>
+                    <li><a href="#about">
+                        <span class="en">About</span>
+                        <span class="ar">من نحن</span>
+                        <span class="zh">关于我们</span>
+                    </a></li>
+                    <li><a href="#services">
+                        <span class="en">Services</span>
+                        <span class="ar">خدماتنا</span>
+                        <span class="zh">核心业务</span>
+                    </a></li>
+                    <li><a href="#partners">
+                        <span class="en">Partners</span>
+                        <span class="ar">شركاؤنا</span>
+                        <span class="zh">合作伙伴</span>
+                    </a></li>
+                    <li><a href="#contact">
+                        <span class="en">Contact</span>
+                        <span class="ar">اتصل بنا</span>
+                        <span class="zh">联系我们</span>
+                    </a></li>
                 </ul>
             </nav>
             <div class="nav-controls">
-                <button class="btn-lang" onclick="toggleLang()">
-                    <i class="fas fa-globe"></i> <span class="zh">EN</span><span class="en">CN</span>
-                </button>
+                
+                <div class="lang-dropdown">
+                    <button class="lang-btn">
+                        <i class="fas fa-globe"></i> 
+                        <span id="current-lang">English</span>
+                        <i class="fas fa-chevron-down" style="font-size:10px;"></i>
+                    </button>
+                    <div class="lang-content">
+                        <a href="javascript:void(0)" onclick="setLang('en')">English</a>
+                        <a href="javascript:void(0)" onclick="setLang('ar')">العربية</a>
+                        <a href="javascript:void(0)" onclick="setLang('zh')">中文</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </header>
@@ -218,12 +323,18 @@
         <div class="container">
             <div class="hero-text" data-aos="fade-up" data-aos-duration="1000">
                 <div style="display:inline-block; background:rgba(243,146,0,0.2); border:1px solid var(--accent); color:var(--accent); padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:20px;">
-                    <span class="zh">专注国际物流 20 年</span><span class="en">EST. 2006</span>
+                    <span class="en">EST. 2006</span>
+                    <span class="ar">تأسست عام 2006</span>
+                    <span class="zh">专注国际物流 20 年</span>
                 </div>
-                <h1 class="zh">连接全球<br>交付信任与价值</h1>
+                
                 <h1 class="en">Connecting The World,<br>Delivering Value.</h1>
-                <p class="zh">颖运国际物流 (Inteltrans) 是您值得信赖的全球供应链合作伙伴。深耕中东航线，拥有 NVOCC 及 JCTrans 双重资质认证。</p>
+                <h1 class="ar">نربط العالم،<br>ونسلم القيمة.</h1>
+                <h1 class="zh">连接全球<br>交付信任与价值</h1>
+                
                 <p class="en">Your trusted partner in global supply chain solutions. Specialized in Middle East routes with NVOCC & JCTrans certifications.</p>
+                <p class="ar">شريكك الموثوق في حلول سلاسل التوريد العالمية. متخصصون في خطوط الشرق الأوسط مع اعتمادات NVOCC و JCTrans.</p>
+                <p class="zh">颖运国际物流 (Inteltrans) 是您值得信赖的全球供应链合作伙伴。深耕中东航线，拥有 NVOCC 及 JCTrans 双重资质认证。</p>
                 
                 <div class="badge-group">
                     <div class="badge-card"><span>NVOCC License</span><strong>MOC-NV 33070</strong></div>
@@ -238,22 +349,38 @@
             <div class="stats-grid">
                 <div class="stat-item">
                     <h3><span class="counter">20</span>+</h3>
-                    <p><span class="zh">年行业经验</span><span class="en">Years Exp</span></p>
+                    <p>
+                        <span class="en">Years Exp</span>
+                        <span class="ar">سنة خبرة</span>
+                        <span class="zh">年行业经验</span>
+                    </p>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-item">
                     <h3><span class="counter">100</span>+</h3>
-                    <p><span class="zh">全球代理</span><span class="en">Global Agents</span></p>
+                    <p>
+                        <span class="en">Global Agents</span>
+                        <span class="ar">وكيل عالمي</span>
+                        <span class="zh">全球代理</span>
+                    </p>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-item">
                     <h3><span class="counter">500</span>+</h3>
-                    <p><span class="zh">知名客户</span><span class="en">Clients</span></p>
+                    <p>
+                        <span class="en">Clients</span>
+                        <span class="ar">عميل سعيد</span>
+                        <span class="zh">知名客户</span>
+                    </p>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-item">
                     <h3>24/7</h3>
-                    <p><span class="zh">全天候响应</span><span class="en">Support</span></p>
+                    <p>
+                        <span class="en">Support</span>
+                        <span class="ar">دعم فني</span>
+                        <span class="zh">全天候响应</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -262,8 +389,9 @@
     <section id="services" class="section-padding">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
-                <h2 class="zh">全方位核心业务</h2>
                 <h2 class="en">Our Expertise</h2>
+                <h2 class="ar">خدماتنا المتميزة</h2>
+                <h2 class="zh">全方位核心业务</h2>
             </div>
             <div class="services-grid">
                 
@@ -272,10 +400,18 @@
                         <img src="仓库正面.png" alt="Ocean Freight" style="width: 100%; height: 100%; object-fit: cover; object-position: center 35%;">
                     </div>
                     <div class="service-content">
-                        <h3 class="zh">全球集装箱海运 (FCL/LCL)</h3><h3 class="en">Ocean Freight</h3>
-                        <p class="zh">深耕中东及亚洲航线，提供极具竞争力的整柜与拼箱方案，涵盖订舱、清关、门到门全流程服务。</p>
+                        <h3 class="en">Ocean Freight (FCL/LCL)</h3>
+                        <h3 class="ar">الشحن البحري (FCL/LCL)</h3>
+                        <h3 class="zh">全球集装箱海运 (FCL/LCL)</h3>
+                        
                         <p class="en">Strategic FCL/LCL services covering Asia to Middle East routes with full end-to-end visibility.</p>
-                        <span class="read-more"><span class="zh">了解更多</span><span class="en">Read More</span> <i class="fas fa-arrow-right"></i></span>
+                        <p class="ar">خدمات شحن استراتيجية تغطي خطوط آسيا إلى الشرق الأوسط مع رؤية شاملة من الباب إلى الباب.</p>
+                        <p class="zh">深耕中东及亚洲航线，提供极具竞争力的整柜与拼箱方案，涵盖订舱、清关、门到门全流程服务。</p>
+                        
+                        <span class="read-more">
+                            <span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> 
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
 
@@ -284,10 +420,18 @@
                         <img src="空运机场.jpg" alt="Air Freight">
                     </div>
                     <div class="service-content">
-                        <h3 class="zh">极速空运与多式联运</h3><h3 class="en">Air Transport</h3>
-                        <p class="zh">对接全球干线航空，专注高价值货物、医疗器械及电子产品，保障货物安全、精准、准时送达。</p>
+                        <h3 class="en">Air Transport</h3>
+                        <h3 class="ar">الشحن الجوي السريع</h3>
+                        <h3 class="zh">极速空运与多式联运</h3>
+                        
                         <p class="en">Direct airline partnerships for high-value cargo, ensuring speed and reliability.</p>
-                        <span class="read-more"><span class="zh">了解更多</span><span class="en">Read More</span> <i class="fas fa-arrow-right"></i></span>
+                        <p class="ar">شراكات مباشرة مع خطوط الطيران للبضائع عالية القيمة، لضمان السرعة والموثوقية.</p>
+                        <p class="zh">对接全球干线航空，专注高价值货物、医疗器械及电子产品，保障货物安全、精准、准时送达。</p>
+                        
+                        <span class="read-more">
+                            <span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> 
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
 
@@ -296,10 +440,18 @@
                         <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800" alt="Middle East">
                     </div>
                     <div class="service-content">
-                        <h3 class="zh">中东双清专线 (DDP/DDU)</h3><h3 class="en">Middle East Expert</h3>
-                        <p class="zh">提供沙特、阿联酋等国的一站式双清到门服务，解决复杂关务难题，助力中国品牌合规出海。</p>
+                        <h3 class="en">Middle East Expert (DDP)</h3>
+                        <h3 class="ar">خبراء الشرق الأوسط (DDP)</h3>
+                        <h3 class="zh">中东双清专线 (DDP/DDU)</h3>
+                        
                         <p class="en">Specialized DDP/DDU services for GCC countries, simplifying complex customs.</p>
-                        <span class="read-more"><span class="zh">了解更多</span><span class="en">Read More</span> <i class="fas fa-arrow-right"></i></span>
+                        <p class="ar">خدمات DDP/DDU المتخصصة لدول مجلس التعاون الخليجي، لتبسيط إجراءات الجمارك المعقدة.</p>
+                        <p class="zh">提供沙特、阿联酋等国的一站式双清到门服务，解决复杂关务难题，助力中国品牌合规出海。</p>
+                        
+                        <span class="read-more">
+                            <span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> 
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
 
@@ -308,10 +460,18 @@
                         <img src="仓库背面.png" alt="Warehousing">
                     </div>
                     <div class="service-content">
-                        <h3 class="zh">仓储增值与项目物流</h3><h3 class="en">Warehousing</h3>
-                        <p class="zh">提供大件设备运输、海外仓储、贴标及分拨服务，针对不同行业定制个性化供应链方案。</p>
+                        <h3 class="en">Warehousing & Solutions</h3>
+                        <h3 class="ar">التخزين والحلول اللوجستية</h3>
+                        <h3 class="zh">仓储增值与项目物流</h3>
+                        
                         <p class="en">Customized solutions for over-sized cargo, labeling, and distribution.</p>
-                        <span class="read-more"><span class="zh">了解更多</span><span class="en">Read More</span> <i class="fas fa-arrow-right"></i></span>
+                        <p class="ar">حلول مخصصة للبضائع الكبيرة، وضع الملصقات، وخدمات التوزيع المتكاملة.</p>
+                        <p class="zh">提供大件设备运输、海外仓储、贴标及分拨服务，针对不同行业定制个性化供应链方案。</p>
+                        
+                        <span class="read-more">
+                            <span class="en">Read More</span><span class="ar">اقرأ المزيد</span><span class="zh">了解更多</span> 
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
                     </div>
                 </div>
 
@@ -321,11 +481,19 @@
 
     <section class="cta-section">
         <div class="container" data-aos="zoom-in">
-            <h2 class="zh">准备好开始运输了吗？</h2>
             <h2 class="en">Ready to ship with us?</h2>
-            <p class="zh" style="opacity: 0.9; margin: 15px 0;">我们的专家团队随时为您提供最优物流方案</p>
+            <h2 class="ar">هل أنت مستعد للشحن معنا؟</h2>
+            <h2 class="zh">准备好开始运输了吗？</h2>
+            
             <p class="en" style="opacity: 0.9; margin: 15px 0;">Our experts are ready to provide the best logistics solution.</p>
-            <a href="#contact" class="cta-btn"><span class="zh">立即询价</span><span class="en">Get a Quote</span></a>
+            <p class="ar" style="opacity: 0.9; margin: 15px 0;">خبراؤنا مستعدون لتقديم أفضل الحلول اللوجستية لك.</p>
+            <p class="zh" style="opacity: 0.9; margin: 15px 0;">我们的专家团队随时为您提供最优物流方案</p>
+            
+            <a href="#contact" class="cta-btn">
+                <span class="en">Get a Quote</span>
+                <span class="ar">احصل على عرض سعر</span>
+                <span class="zh">立即询价</span>
+            </a>
         </div>
     </section>
 
@@ -336,21 +504,22 @@
                     <div class="footer-logo">
                         <img src="英文 单版.png" alt="Inteltrans">
                     </div>
-                    <p class="zh" style="line-height: 1.8; opacity: 0.8;">颖运国际秉承“专业、诚信、高效”的服务理念，致力于通过数字化的管理与卓越的线下执行力，为全球客户优化物流成本。</p>
                     <p class="en" style="line-height: 1.8; opacity: 0.8;">Inteltrans upholds "Professionalism, Integrity, and Efficiency," optimizing supply chain costs through excellence.</p>
+                    <p class="ar" style="line-height: 1.8; opacity: 0.8;">تلتزم إنتلترانس بـ "الاحترافية، والنزاهة، والكفاءة"، مما يحسن تكاليف سلاسل التوريد من خلال التميز.</p>
+                    <p class="zh" style="line-height: 1.8; opacity: 0.8;">颖运国际秉承“专业、诚信、高效”的服务理念，致力于通过数字化的管理与卓越的线下执行力，为全球客户优化物流成本。</p>
                 </div>
 
                 <div class="footer-col">
-                    <h4 class="zh">核心优势</h4><h4 class="en">Why Us</h4>
+                    <h4 class="en">Why Us</h4><h4 class="ar">لماذا نحن</h4><h4 class="zh">核心优势</h4>
                     <ul class="footer-list">
-                        <li><i class="fas fa-check-circle"></i> <span class="zh">深耕进出口 20 载</span><span class="en">20 Years ME Focus</span></li>
-                        <li><i class="fas fa-check-circle"></i> <span class="zh">A类报关资质</span><span class="en">Class-A Broker</span></li>
-                        <li><i class="fas fa-check-circle"></i> <span class="zh">全球 100+ 代理</span><span class="en">100+ Agents</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span class="en">20 Years ME Focus</span><span class="ar">20 عاماً في الشرق الأوسط</span><span class="zh">深耕进出口 20 载</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span class="en">Class-A Broker</span><span class="ar">وسيط جمركي فئة A</span><span class="zh">A类报关资质</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span class="en">100+ Agents</span><span class="ar">أكثر من 100 وكيل</span><span class="zh">全球 100+ 代理</span></li>
                     </ul>
                 </div>
 
                 <div id="partners" class="footer-col">
-                    <h4 class="zh">合作品牌</h4><h4 class="en">Partners</h4>
+                    <h4 class="en">Partners</h4><h4 class="ar">شركاؤنا</h4><h4 class="zh">合作品牌</h4>
                     <div class="partner-display" id="brand-rotator">
                         <img src="XIAOMI.jpg" alt="Xiaomi" class="active">
                         <img src="MINDRAY.jpg" alt="Mindray">
@@ -360,17 +529,21 @@
                 </div>
 
                 <div class="footer-col">
-                    <h4 class="zh">联系我们</h4><h4 class="en">Contact</h4>
+                    <h4 class="en">Contact</h4><h4 class="ar">اتصل بنا</h4><h4 class="zh">联系我们</h4>
                     <ul class="footer-list">
                         <li><i class="fas fa-envelope"></i> info@inteltrans.net</li>
                         <li><i class="fas fa-phone-alt"></i> +86 0755 2891 3742</li>
-                        <li><i class="fas fa-map-marker-alt"></i> <span class="zh">深圳市龙岗区荣德时代广场B座</span><span class="en">RongDe Times Square, Shenzhen</span></li>
+                        <li><i class="fas fa-map-marker-alt"></i> 
+                            <span class="en">RongDe Times Square, Shenzhen</span>
+                            <span class="ar">ساحة رونغدي تايمز، شنتشن</span>
+                            <span class="zh">深圳市龙岗区荣德时代广场B座</span>
+                        </li>
                     </ul>
                 </div>
             </div>
             
             <div class="copyright">
-                &copy; 2017 Inteltrans International Logistics Co., Ltd. <span class="zh">版权所有</span><span class="en">All Rights Reserved.</span>
+                &copy; 2017 Inteltrans International Logistics Co., Ltd. <span class="en">All Rights Reserved.</span><span class="ar">كل الحقوق محفوظة.</span><span class="zh">版权所有</span>
             </div>
         </div>
     </footer>
@@ -381,14 +554,32 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // 1. 初始化动画
         AOS.init({ offset: 120, duration: 800, easing: 'ease-out-cubic', once: true });
         
-        function toggleLang() {
-            document.body.classList.toggle('lang-zh');
-            document.body.classList.toggle('lang-en');
+        // 2. [新] 指定语言切换功能
+        const langMap = {
+            'en': { class: 'lang-en', label: 'English' },
+            'ar': { class: 'lang-ar', label: 'العربية' },
+            'zh': { class: 'lang-zh', label: '中文' }
+        };
+
+        function setLang(langCode) {
+            // 移除所有语言类
+            document.body.classList.remove('lang-en', 'lang-ar', 'lang-zh');
+            
+            // 添加选中的语言类
+            const target = langMap[langCode];
+            document.body.classList.add(target.class);
+            
+            // 更新按钮显示的文字
+            document.getElementById('current-lang').innerText = target.label;
+            
+            // 刷新动画，确保 RTL 布局正常
             setTimeout(function(){ AOS.refresh(); }, 100);
         }
 
+        // 3. 数字计数器
         const counters = document.querySelectorAll('.counter');
         counters.forEach(counter => {
             const updateCount = () => {
@@ -405,7 +596,7 @@
             setTimeout(updateCount, 1000);
         });
 
-        // 品牌轮播
+        // 4. 品牌轮播
         const brands = document.querySelectorAll('#brand-rotator img');
         if(brands.length > 0) {
             let currentBrand = 0;
